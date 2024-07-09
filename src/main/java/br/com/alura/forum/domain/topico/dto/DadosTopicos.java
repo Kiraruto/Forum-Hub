@@ -12,6 +12,6 @@ public record DadosTopicos(@NotNull
                            @NotBlank
                            String curso) {
     public DadosTopicos(DadosToDadosTopicos dados) {
-        this(dados.titulo(),dados.mensagem(),dados.autor(),dados.curso());
+        this(dados.titulo(), dados.mensagem(), dados.autor(), dados.curso());
     }
 }

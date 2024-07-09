@@ -1,7 +1,9 @@
 package br.com.alura.forum.domain.Curso;
 
 import br.com.alura.forum.domain.topico.dto.DetalhamentoTopicoId;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -1,8 +1,8 @@
 package br.com.alura.forum.domain.topico;
 
 import br.com.alura.forum.domain.Curso.Curso;
+import br.com.alura.forum.domain.usuario.Usuario;
 import br.com.alura.forum.domain.resposta.Resposta;
-import br.com.alura.forum.domain.Usuario.Usuario;
 import br.com.alura.forum.domain.topico.dto.DetalhamentoTopico;
 import br.com.alura.forum.domain.topico.dto.DetalhamentoTopicoId;
 import jakarta.persistence.*;
@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "topico")
@@ -27,12 +28,15 @@ public class Topico {
     private String mensagem;
     private LocalDateTime dataCriacao;
     private Boolean status;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Usuario autor;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Curso curso;
-    @OneToMany
-    private List<Resposta> resposta;
+
+    @OneToMany(mappedBy = "topico", cascade = CascadeType.ALL)
+    private List<Resposta> resposta = new ArrayList<>();
 
     public Topico(DetalhamentoTopico dados) {
         this.titulo = dados.titulo();

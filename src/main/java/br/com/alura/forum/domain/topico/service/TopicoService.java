@@ -1,9 +1,10 @@
 package br.com.alura.forum.domain.topico.service;
 
 import br.com.alura.forum.domain.Curso.repositorio.CursoRepository;
-import br.com.alura.forum.domain.Usuario.repository.AutorRepository;
+import br.com.alura.forum.domain.usuario.repository.UsuarioRepository;
 import br.com.alura.forum.domain.perfil.Perfil;
 import br.com.alura.forum.domain.perfil.repositorio.PerfilRepositorio;
+import br.com.alura.forum.domain.resposta.repositorio.RespostaRepository;
 import br.com.alura.forum.domain.topico.Topico;
 import br.com.alura.forum.domain.topico.dto.DetalhamentoTopico;
 import br.com.alura.forum.domain.topico.repositorio.TopicoRepository;
@@ -28,7 +29,10 @@ public class TopicoService {
     private CursoRepository cursoRepository;
 
     @Autowired
-    private AutorRepository autorRepository;
+    private UsuarioRepository autorRepository;
+
+    @Autowired
+    private RespostaRepository respostaRepository;
 
     @Transactional
     public void save(DetalhamentoTopico dados) {
@@ -48,4 +52,5 @@ public class TopicoService {
         perfilRepositorio.save(perfil);
 
     }
+
 }

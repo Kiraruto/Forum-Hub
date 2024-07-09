@@ -1,5 +1,6 @@
 package br.com.alura.forum.controller;
 
+import br.com.alura.forum.domain.resposta.repositorio.RespostaRepository;
 import br.com.alura.forum.domain.topico.Topico;
 import br.com.alura.forum.domain.topico.dto.*;
 import br.com.alura.forum.domain.topico.repositorio.TopicoRepository;
@@ -26,6 +27,9 @@ public class TopicoController {
     @Autowired
     private TopicoService topicoService;
 
+    @Autowired
+    private RespostaRepository respostaRepository;
+
     @Transactional
     @PostMapping
     public ResponseEntity<?> registrarTopico(@RequestBody @Valid DetalhamentoTopico dados) {
@@ -36,7 +40,7 @@ public class TopicoController {
 
         topicoService.save(dados);
 
-        var retornoTopico = new DadosToDadosTopicos(dados.titulo(), dados.mensagem() , dados.autor().getNome() , dados.curso().getNome());
+        var retornoTopico = new DadosToDadosTopicos(dados.titulo(), dados.mensagem(), dados.autor().getNome(), dados.curso().getNome());
 
         return ResponseEntity.ok(new DadosTopicos(retornoTopico));
     }
@@ -46,7 +50,7 @@ public class TopicoController {
 
         var page = repository.findAllByStatusTrueOrderByDataCriacaoAsc(pageable).map(DetalhamentoTopicoToStatusEDataCriacao::new);
 
-        return  ResponseEntity.ok(page);
+        return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
@@ -72,14 +76,14 @@ public class TopicoController {
             return ResponseEntity.status(404).body("Tópico não encontrado");
         }
 
-        if (!dados.id().equals(id)){
+        if (!dados.id().equals(id)) {
             return ResponseEntity.status(404).body("O id da URL está diferente do id do JSON");
         }
 
         var topico = repository.getReferenceById(id);
         topico.atualizarInformacoes(dados);
 
-        return ResponseEntity.ok(new DadosToDadosTopicos(dados.titulo(), dados.mensagem() , dados.autor().getNome() , dados.curso().getNome()));
+        return ResponseEntity.ok(new DadosToDadosTopicos(dados.titulo(), dados.mensagem(), dados.autor().getNome(), dados.curso().getNome()));
     }
 
     @DeleteMapping("/{id}")
@@ -93,6 +97,7 @@ public class TopicoController {
         }
 
         repository.deleteById(id);
+        respostaRepository.deleteByTopico_Id(id);
 
         return ResponseEntity.noContent().build();
     }

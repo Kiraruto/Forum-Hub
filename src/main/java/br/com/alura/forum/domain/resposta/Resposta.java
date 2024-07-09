@@ -1,11 +1,11 @@
 package br.com.alura.forum.domain.resposta;
 
-import br.com.alura.forum.domain.Usuario.Usuario;
+import br.com.alura.forum.domain.usuario.Usuario;
+import br.com.alura.forum.domain.resposta.dto.DetalhamentoResposta;
+import br.com.alura.forum.domain.topico.Topico;
+import br.com.alura.forum.domain.topico.dto.DadosTopicoId;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -13,16 +13,43 @@ import java.time.LocalDateTime;
 @Entity(name = "resposta")
 @NoArgsConstructor
 @Getter
+@Setter
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Resposta {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String mensagem;
-    private String topico;
     private LocalDateTime dataCriacao;
-    private String autor;
+    private Boolean solucao;
+
     @ManyToOne
-    private Usuario solucao;
+    @JoinColumn(name = "topico_id")
+    private Topico topico;
+
+    @ManyToOne
+    @JoinColumn(name = "autor_id")
+    private Usuario autor;
+
+    public Resposta(DetalhamentoResposta dados) {
+        this.id = dados.id();
+        this.mensagem = dados.mensagem();
+        this.topico = dados.topico();
+        this.dataCriacao = LocalDateTime.now();
+        this.autor = dados.autor();
+        this.solucao = dados.solucao();
+    }
+
+    public Resposta(DadosTopicoId topico) {
+        this.id = topico.id();
+    }
+
+
+    public Resposta(String s) {
+        this.mensagem = s;
+    }
+
+
+    public Resposta(String mensagem, Usuario autor, Boolean solucao) {
+    }
 }

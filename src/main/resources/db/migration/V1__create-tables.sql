@@ -7,7 +7,7 @@ CREATE TABLE usuario (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    senha INT NOT NULL,
+    senha VARCHAR(255) NOT NULL,
     perfil_id BIGINT,
     FOREIGN KEY (perfil_id) REFERENCES perfil(id)
 );
@@ -32,10 +32,13 @@ CREATE TABLE topico (
 
 CREATE TABLE resposta (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    mensagem TEXT NOT NULL,
-    data_criacao DATETIME NOT NULL,
+    mensagem VARCHAR(255) NOT NULL,
+    data_criacao TIMESTAMP,
     autor_id BIGINT,
     topico_id BIGINT,
-    FOREIGN KEY (autor_id) REFERENCES usuario(id),
-    FOREIGN KEY (topico_id) REFERENCES topico(id)
+    solucao BOOLEAN,
+    FOREIGN KEY (topico_id) REFERENCES topico(id),
+    FOREIGN KEY (autor_id) REFERENCES usuario(id)
 );
+
+
